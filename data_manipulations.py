@@ -38,16 +38,16 @@ def histogram(frame, indicator, disaggregate_by):
     of the indicator for poverty == True and poverty == False
     """
     x = frame[frame[disaggregate_by]].groupby([indicator]).size().to_frame()
-    c = f"{indicator}_{disaggregate_by}_true_count"
+    c = f"is_{disaggregate_by}_count"
     x.rename(columns={0:c}, inplace=True)
-    x[f"{indicator}_{disaggregate_by}_true_percentage"] = x[c] / x[c].sum() * 100
+    x[f"is_{disaggregate_by}"] = x[c] / x[c].sum() * 100
 
     y = frame[~frame[disaggregate_by]].groupby([indicator]).size().to_frame()
-    c = f"{indicator}_{disaggregate_by}_false_count"
+    c = f"isnt_{disaggregate_by}_count"
     y.rename(columns={0:c}, inplace=True)
-    y[f"{indicator}_{disaggregate_by}_false_percentage"] = y[c] / y[c].sum() * 100
+    y[f"isnt_{disaggregate_by}"] = y[c] / y[c].sum() * 100
 
     return x.join(y)
 
-def histogram_plot(hist, indicator, disaggregate_by):
-    hist.plot.bar(y=[f"{indicator}_{disaggregate_by}_true_percentage", f"{indicator}_{disaggregate_by}_false_percentage"])
+def histogram_plot(hist, disaggregate_by):
+    hist.plot.bar(y=[f"is_{disaggregate_by}", f"isnt_{disaggregate_by}"])
