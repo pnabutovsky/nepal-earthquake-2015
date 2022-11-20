@@ -17,22 +17,22 @@ def numeric_income(income_string):
         x = None
     return x
 
-def poverty_histogram(frame, indicator):
+def histogram(frame, indicator, disaggregate_by):
     """
     For any frame with a boolean column "poverty", create a histogram and a percentage
     of the indicator for poverty == True and poverty == False
     """
-    x = frame[frame['poverty']].groupby([indicator]).size().to_frame()
-    c = f"{indicator}_poverty_count"
+    x = frame[frame[disaggregate_by]].groupby([indicator]).size().to_frame()
+    c = f"{indicator}_{disaggregate_by}_true_count"
     x.rename(columns={0:c}, inplace=True)
-    x['Poor'] = x[c] / x[c].sum() * 100
+    x[f"{indicator}_{disaggregate_by}_true_percentage"] = x[c] / x[c].sum() * 100
 
-    y = frame[~frame['poverty']].groupby([indicator]).size().to_frame()
-    c = f"{indicator}_no_poverty_count"
+    y = frame[~frame[disaggregate_by]].groupby([indicator]).size().to_frame()
+    c = f"{indicator}_{disaggregate_by}_false_count"
     y.rename(columns={0:c}, inplace=True)
-    y['Not Poor'] = y[c] / y[c].sum() * 100
+    y[f"{indicator}_{disaggregate_by}_false_percentage"] = y[c] / y[c].sum() * 100
 
     return x.join(y)
 
-def poverty_histogram_plot(hist):
-    hist.plot.bar(y=['Poor', 'Not Poor'])
+def histogram_plot(hist, indicator, disaggregate_by):
+    hist.plot.bar(y=[f"{indicator}_{disaggregate_by}_true_percentage", f"{indicator}_{disaggregate_by}_false_percentage"])
