@@ -17,6 +17,21 @@ def numeric_income(income_string):
         x = None
     return x
 
+def numeric_damage_grade(damage):
+    if damage == 'Grade 1':
+        x = 1
+    elif damage == 'Grade 2':
+        x = 2
+    elif damage == 'Grade 3':
+        x = 3
+    elif damage == 'Grade 4':
+        x = 4
+    elif damage == 'Grade 5':
+        x = 5
+    else:
+        x = None
+    return x
+
 def histogram(frame, indicator, disaggregate_by):
     """
     For any frame with a boolean column "poverty", create a histogram and a percentage
