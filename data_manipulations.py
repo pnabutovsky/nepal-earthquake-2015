@@ -1,3 +1,5 @@
+import time
+
 def numeric_income(income_string):
     """
     Converts an income range string to a numeric for further calculations.
@@ -34,9 +36,11 @@ def numeric_damage_grade(damage):
 
 def histogram(frame, indicator, disaggregate_by):
     """
-    For any frame with a boolean column "poverty", create a histogram and a percentage
-    of the indicator for poverty == True and poverty == False
+    For any frame with a boolean column, create a histogram and a percentage
+    for indicator == True and indicator == False
     """
+    start_time = time.time()
+    
     x = frame[frame[disaggregate_by]].groupby([indicator]).size().to_frame()
     c = f"is_{disaggregate_by}_count"
     x.rename(columns={0:c}, inplace=True)
@@ -46,8 +50,13 @@ def histogram(frame, indicator, disaggregate_by):
     c = f"isnt_{disaggregate_by}_count"
     y.rename(columns={0:c}, inplace=True)
     y[f"isnt_{disaggregate_by}"] = y[c] / y[c].sum() * 100
-
-    return x.join(y)
+    
+    result = x.join(y)
+    
+    elapsed_time = time.time() - start_time
+    print(f"Query runtime = {elapsed_time}")
+    
+    return result
 
 def histogram_plot(hist, disaggregate_by):
     hist.plot.bar(y=[f"is_{disaggregate_by}", f"isnt_{disaggregate_by}"])
