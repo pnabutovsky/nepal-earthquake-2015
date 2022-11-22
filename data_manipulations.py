@@ -39,7 +39,6 @@ def histogram(frame, indicator, disaggregate_by):
     For any frame with a boolean column, create a histogram and a percentage
     for indicator == True and indicator == False
     """
-    start_time = time.time()
     
     x = frame[frame[disaggregate_by]].groupby([indicator]).size().to_frame()
     c = f"is_{disaggregate_by}_count"
@@ -51,12 +50,7 @@ def histogram(frame, indicator, disaggregate_by):
     y.rename(columns={0:c}, inplace=True)
     y[f"isnt_{disaggregate_by}"] = y[c] / y[c].sum() * 100
     
-    result = x.join(y)
-    
-    elapsed_time = time.time() - start_time
-    print(f"Query runtime = {elapsed_time}")
-    
-    return result
+    return x.join(y)
 
 def histogram_plot(hist, disaggregate_by):
     hist.plot.bar(y=[f"is_{disaggregate_by}", f"isnt_{disaggregate_by}"])
