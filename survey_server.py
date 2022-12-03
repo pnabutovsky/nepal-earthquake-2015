@@ -16,6 +16,7 @@ def create_household_demographics():
 
     output_file = open(output_file_name, 'a')
     for record in request_json['data']:
+        time.sleep(0.001) # Represents record processing time
         if record['valid'] == 1:
             output_file.write(f"{','.join([transaction_id, str(content_length), record['content']])}\n")
 
