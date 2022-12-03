@@ -1,3 +1,6 @@
 .DS_Store
 .ipynb_checkpoints/
 __pycache__/
+earthquake-2015-old.ipynb
+*.csv
+survey_database*
