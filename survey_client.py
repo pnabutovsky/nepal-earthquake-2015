@@ -27,7 +27,7 @@ def pad(data):
 
 def pad_noisy(data, epsilon = 0.004):
     scale = 1 / epsilon
-    noise = round(abs(numpy.random.laplace(loc = 0, scale = scale)))
+    noise = round(numpy.random.laplace(loc = 0, scale = scale))
 
     pad_size = number_of_records_limit - len(data) - noise
     if pad_size > number_of_records_limit:
