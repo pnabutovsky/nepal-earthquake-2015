@@ -25,12 +25,11 @@ def pad(data):
     for i in range(pad_size):
         data.append({'valid': 0, 'content': pad_content})
 
-def pad_noisy(data, epsilon = 0.004):
+def pad_noisy(data, epsilon = 0.01):
     scale = 1 / epsilon
-    noise = round(numpy.random.laplace(loc = 0, scale = scale))
-
+    data_size = len(data)
     max_pad_size = number_of_records_limit - len(data)
-    pad_size = max_pad_size - noise
+    pad_size = round(abs(numpy.random.laplace(loc = 0, scale = scale)))
 
     if pad_size > max_pad_size:
         pad_size = max_pad_size
